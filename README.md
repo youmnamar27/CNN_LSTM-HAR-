@@ -260,7 +260,7 @@ Here are some example predictions made by the model:
 #### Accuracy & Loss
 ![Model loss)](https://github.com/user-attachments/assets/ba57a374-5d15-46ad-ad04-bad5ee69e327)
 
-![Model accuracy](https://github.com/user-attachments/assets/72b0279a-8aea-4158-a19e-2eaa855425c9)
+![Model accuracy)](https://github.com/user-attachments/assets/9456375a-bd16-4f53-a159-e736e3f78d10)
 
 ![accuracy_plot](https://github.com/user-attachments/assets/90af7876-d0ac-410b-abcb-e71673e4b0ac)
 
