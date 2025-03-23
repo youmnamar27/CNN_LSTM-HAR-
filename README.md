@@ -212,89 +212,37 @@ X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, stratify=
 print(f"Training set shape: {X_train.shape}")
 print(f"Validation set shape: {X_val.shape}")
 
-### **2️⃣ Define the CNN-LSTM Model*
-```python
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import TimeDistributed, Conv2D, MaxPooling2D, Flatten, LSTM, Dense, Dropout
-from tensorflow.keras.optimizers import Adam
 
-num_classes = len(class_names)
+# CNN-LSTM Human Activity Recognition (HAR)
 
-model = Sequential([
-    tf.keras.layers.Input(shape=(sequence_length, img_height, img_width, 3)),
-    TimeDistributed(Conv2D(32, (3,3), activation='relu')),
-    TimeDistributed(MaxPooling2D((2,2))),
-    TimeDistributed(Conv2D(64, (3,3), activation='relu')),
-    TimeDistributed(MaxPooling2D((2,2))),
-    TimeDistributed(Flatten()),
-    LSTM(64),
-    Dropout(0.5),
-    Dense(128, activation='relu'),
-    Dense(num_classes, activation='softmax')
-])
+This project implements a **CNN-LSTM model** to classify human activities from image sequences. The model first extracts spatial features using **Convolutional Neural Networks (CNNs)** and then captures temporal dependencies using **Long Short-Term Memory (LSTM)** networks.
 
-model.compile(optimizer=Adam(learning_rate=0.001), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-model.summary()
+---
 
-### **3️⃣ Train the Model**
-```python
-# Train the model
-history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=10, batch_size=8)
+## 📌 What This Code Does:
+✅ **Loads & Preprocesses the Dataset** (Normalizes images, converts them into sequences)  
+✅ **Defines a CNN-LSTM Model** (Extracts spatial & temporal features)  
+✅ **Trains the Model** (On Human Activity Recognition dataset)  
+✅ **Evaluates the Model** (Generates accuracy/loss plots & confusion matrix)  
+✅ **Saves the Model** (So you can reuse it later)  
 
-# Save the trained model
-model.save("cnn_lstm_har_model.keras")
-print("Model saved successfully.")
-4️⃣ Evaluate the Model
-python
-Copy
-Edit
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import classification_report, confusion_matrix
+---
 
-# Plot training accuracy
-plt.figure(figsize=(10, 5))
-plt.plot(history.history['accuracy'], label='Train Accuracy')
-plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.title('Model Accuracy')
-plt.legend()
-plt.show()
+## 📊 Dataset & Preprocessing
+- The dataset is split into **80% training** and **20% validation**.
+- **Data augmentation** techniques such as **rotation, brightness adjustments, and horizontal flipping** are applied.
+- The model is compiled using **Adam optimizer** and **Sparse Categorical Crossentropy loss**.
+- Training is conducted for **20 epochs** with a batch size of **8**.
 
-# Plot training loss
-plt.figure(figsize=(10, 5))
-plt.plot(history.history['loss'], label='Train Loss')
-plt.plot(history.history['val_loss'], label='Validation Loss')
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.title('Model Loss')
-plt.legend()
-plt.show()
+---
 
-# Evaluate the model on validation set
-y_pred = np.argmax(model.predict(X_val), axis=1)
+## 🖥 Usage
 
-# Display classification report
-print("Classification Report:\n")
-print(classification_report(y_val, y_pred, target_names=class_names))
+### 1️⃣ Install Dependencies  
+Run the following command to install required libraries:  
 
-# Compute confusion matrix
-cm = confusion_matrix(y_val, y_pred)
-
-# Plot confusion matrix
-plt.figure(figsize=(12, 8))
-sns.heatmap(cm, annot=True, fmt='d', xticklabels=class_names, yticklabels=class_names, cmap='Blues')
-plt.xlabel("Predicted Label")
-plt.ylabel("Actual Label")
-plt.title("Confusion Matrix")
-plt.show()
-📌 What This Code Does:
-✅ Loads & Preprocesses the Dataset (Normalizes images, converts them into sequences)
-✅ Defines a CNN-LSTM Model (Extracts spatial & temporal features)
-✅ Trains the Model (On Human Activity Recognition dataset)
-✅ Evaluates the Model (Generates accuracy/loss plots & confusion matrix)
-✅ Saves the Model (So you can reuse it later)
+```bash
+pip install tensorflow numpy pandas matplotlib seaborn scikit-learn
 
 
 The dataset is split into 80% training and 20% validation.
