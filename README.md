@@ -211,37 +211,33 @@ X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, stratify=
 
 print(f"Training set shape: {X_train.shape}")
 print(f"Validation set shape: {X_val.shape}")
-2️⃣ Define the CNN-LSTM Model
-python
-Copy
-Edit
+
+### **2️⃣ Define the CNN-LSTM Model*
+```python
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import TimeDistributed, Conv2D, MaxPooling2D, Flatten, LSTM, Dense, Dropout
 from tensorflow.keras.optimizers import Adam
 
-# Define model architecture
 num_classes = len(class_names)
 
 model = Sequential([
-    tf.keras.layers.Input(shape=(sequence_length, img_height, img_width, 3)),  # Input shape (sequence of images)
-    TimeDistributed(Conv2D(32, (3,3), activation='relu')),  # First CNN layer
-    TimeDistributed(MaxPooling2D((2,2))),  # Max pooling
-    TimeDistributed(Conv2D(64, (3,3), activation='relu')),  # Second CNN layer
-    TimeDistributed(MaxPooling2D((2,2))),  # Max pooling
-    TimeDistributed(Flatten()),  # Flatten feature maps
-    LSTM(64),  # LSTM layer to learn temporal dependencies
-    Dropout(0.5),  # Dropout to prevent overfitting
-    Dense(128, activation='relu'),  # Fully connected layer
-    Dense(num_classes, activation='softmax')  # Output layer with softmax activation
+    tf.keras.layers.Input(shape=(sequence_length, img_height, img_width, 3)),
+    TimeDistributed(Conv2D(32, (3,3), activation='relu')),
+    TimeDistributed(MaxPooling2D((2,2))),
+    TimeDistributed(Conv2D(64, (3,3), activation='relu')),
+    TimeDistributed(MaxPooling2D((2,2))),
+    TimeDistributed(Flatten()),
+    LSTM(64),
+    Dropout(0.5),
+    Dense(128, activation='relu'),
+    Dense(num_classes, activation='softmax')
 ])
 
-# Compile the model
 model.compile(optimizer=Adam(learning_rate=0.001), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-model.summary()  # Display model architecture
-3️⃣ Train the Model
-python
-Copy
-Edit
+model.summary()
+
+### **3️⃣ Train the Model**
+```python
 # Train the model
 history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=10, batch_size=8)
 
