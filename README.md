@@ -126,17 +126,14 @@ def load_sequences(data_path):
     print("X shape:", X.shape)
     print("y shape:", y.shape)
 
-🚀 Training Process
-🚀 Training the Model
+🚀 Training the Model Process
 This project uses a CNN-LSTM architecture to classify human activities from image sequences. Below is the complete training pipeline.
 
 1️⃣ Load and Preprocess Data
-python
-Copy
-Edit
+
+```python
 import os
 import numpy as np
-import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from sklearn.model_selection import train_test_split
@@ -148,7 +145,30 @@ data_path = "path_to_dataset/train"  # Path to dataset
 
 # Function to load and preprocess image sequences
 def load_sequences(data_path):
-    """
+    X, y = [], []
+    class_names = sorted(os.listdir(data_path))
+    label_map = {name: idx for idx, name in enumerate(class_names)}
+
+    for class_name in class_names:
+        class_dir = os.path.join(data_path, class_name)
+        frames = sorted(os.listdir(class_dir))
+        label = label_map[class_name]
+
+        for i in range(0, len(frames) - sequence_length + 1, sequence_length):
+            sequence = []
+            for j in range(sequence_length):
+                img_path = os.path.join(class_dir, frames[i + j])
+                img = load_img(img_path, target_size=(img_height, img_width))
+                img = img_to_array(img) / 255.0  # Normalize pixel values
+                sequence.append(img)
+            X.append(sequence)
+            y.append(label)
+    
+    return np.array(X), np.array(y), class_names
+
+# Load dataset
+X, y, class_names = load_sequences(data_path)
+X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
     Load image sequences from dataset folders and preprocess them.
 
     Args:
