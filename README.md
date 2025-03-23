@@ -269,6 +269,7 @@ Here are some example predictions made by the model:
 
 #### Confusion Matrix
 ![confusion_matrix](https://github.com/user-attachments/assets/7fb520ed-6ed2-4b66-8d5e-23b68ba883ee)
+![confusion_matrix](https://github.com/user-attachments/assets/1966179b-3a28-437f-913c-355124f92469)
 
 # 📌 What This Code Does:
 ✅ Loads & Preprocesses the Dataset (Normalizes images, converts them into sequences)
