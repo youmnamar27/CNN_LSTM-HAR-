@@ -86,20 +86,23 @@ Fully Connected Layers: Outputs probabilities for each class.
 
 **Total Parameters**: 14,791,887
 
-# Define constants
+# 🛠 Define Constants & Load Dataset
 
-sequence_length = 10
-img_height, img_width = 128, 128
-data_path = "path_to_dataset"
-def load_sequences(data_path):
-   
-    X, y = [], []
-    
+     import os
+    import numpy as np
+    from tensorflow.keras.preprocessing.image import load_img, img_to_array
+
+    # Define constants
+    sequence_length = 10
+    img_height, img_width = 128, 128
+    data_path = "path_to_dataset"
+
+    def load_sequences(data_path):
+         X, y = [], []
     class_names = sorted(os.listdir(data_path))
-    
     label_map = {name: idx for idx, name in enumerate(class_names)}
-     
-     for class_name in class_names:
+    
+    for class_name in class_names:
         class_dir = os.path.join(data_path, class_name)
         frames = sorted(os.listdir(class_dir))
         label = label_map[class_name]
@@ -113,7 +116,9 @@ def load_sequences(data_path):
                 sequence.append(img)
             X.append(sequence)
             y.append(label)
+    
     return np.array(X), np.array(y)
+
     X, y = load_sequences(data_path)
     print("X shape:", X.shape)
     print("y shape:", y.shape)
@@ -160,7 +165,38 @@ The training accuracy improves over epochs, but further hyperparameter tuning or
 
 A confusion matrix is generated to analyze class-wise predictions.
 
+## Define the CNN-LSTM Model
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import TimeDistributed, Conv2D, MaxPooling2D, Flatten, LSTM, Dense, Dropout
+    from tensorflow.keras.optimizers import Adam
 
+    # Define model architecture
+    num_classes = len(class_names)
+
+    model = Sequential([
+    tf.keras.layers.Input(shape=(sequence_length, img_height, img_width, 3)),  # Input shape (sequence of images)
+    TimeDistributed(Conv2D(32, (3,3), activation='relu')),  # First CNN layer
+    TimeDistributed(MaxPooling2D((2,2))),  # Max pooling
+    TimeDistributed(Conv2D(64, (3,3), activation='relu')),  # Second CNN layer
+    TimeDistributed(MaxPooling2D((2,2))),  # Max pooling
+    TimeDistributed(Flatten()),  # Flatten feature maps
+    LSTM(64),  # LSTM layer to learn temporal dependencies
+    Dropout(0.5),  # Dropout to prevent overfitting
+    Dense(128, activation='relu'),  # Fully connected layer
+    Dense(num_classes, activation='softmax')  # Output layer with softmax activation
+    ])
+
+    # Compile the model
+    model.compile(optimizer=Adam(learning_rate=0.001), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    model.summary()  # Display model architecture
+
+## Train the Model
+    history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=10, batch_size=8)
+
+    # Save the trained model
+    model.save("cnn_lstm_har_model.keras")
+    print("Model saved successfully.")
+    
 # 📊 Dataset & Preprocessing
 The dataset is split into 80% training and 20% validation.
 
@@ -210,6 +246,13 @@ Here are some example predictions made by the model:
 
 #### Confusion Matrix
 ![confusion_matrix](https://github.com/user-attachments/assets/7fb520ed-6ed2-4b66-8d5e-23b68ba883ee)
+
+# 📌 What This Code Does:
+✅ Loads & Preprocesses the Dataset (Normalizes images, converts them into sequences)
+✅ Defines a CNN-LSTM Model (Extracts spatial & temporal features)
+✅ Trains the Model (On Human Activity Recognition dataset)
+✅ Evaluates the Model (Generates accuracy/loss plots & confusion matrix)
+✅ Saves the Model (So you can reuse it later)
 
 📜 License
 This project is open-source and available under the MIT License.
