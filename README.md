@@ -197,21 +197,14 @@ Here are some example predictions made by the model:
 ### Model Performance
 
 #### Accuracy & Loss
-![Accuracy Plot](images/accuracy_plot.png)  
-![Loss Plot](images/loss_plot.png)  
+![accuracy_plot](https://github.com/user-attachments/assets/89626304-6ceb-4705-a462-602397907104)
+
+![loss_plot](https://github.com/user-attachments/assets/a4b9bd47-9dc9-468e-9438-9473f2183be5)
 
 #### Confusion Matrix
-![Confusion Matrix](images/confusion_matrix.png)  
+![confusion_matrix](https://github.com/user-attachments/assets/43c242bf-59a7-4102-b8ea-ce89501f0fb7)
 
-🛠 Future Improvements
 
-Incorporate pretrained CNN models (e.g., MobileNet, ResNet) for feature extraction.
-
-Optimize hyperparameters using Grid Search.
-
-Implement attention mechanisms for better temporal feature learning.
-
-Expand dataset for better generalization.
 
 📜 License
 
