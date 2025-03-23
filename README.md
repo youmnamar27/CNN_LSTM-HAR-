@@ -3,7 +3,7 @@ Human Activity Recognition (HAR) using CNN-LSTM
 
 This project implements a deep learning model combining Convolutional Neural Networks (CNNs) and Long Short-Term Memory (LSTM) networks for Human Activity Recognition (HAR) based on image sequences. The model is trained to classify various human activities from image sequences.
 
-📌 Features
+## 📌 Features
 
 Uses CNN for spatial feature extraction.
 
@@ -15,11 +15,11 @@ Handles class imbalance using weighted loss functions.
 
 Implements train-validation split for performance evaluation.
 
-📂 Dataset
+## 📂 Dataset
 
 The dataset consists of labeled image sequences representing different human activities. Each sequence contains 10 consecutive frames.
 
-🎭 Activity Classes
+## 🎭 Activity Classes
 
 The model classifies the following 15 human activities:
 
@@ -53,7 +53,7 @@ Calling
 
 Hugging
 
-🏗 Model Architecture
+## 🏗 Model Architecture
 
 The implemented model follows a CNN-LSTM approach:
 ![cnn_architecture_improved (1)](https://github.com/user-attachments/assets/7ef04a9c-d09a-452f-a536-58b796956968)
@@ -70,7 +70,7 @@ LSTM Layer: Processes temporal dependencies between frames.
 Dropout Layer: Prevents overfitting.
 
 Fully Connected Layers: Outputs probabilities for each class.
-### Model Summary
+## Model Summary
 
 | Layer               | Type                         | Output Shape             | Parameters  |
 |--------------------|----------------------------|--------------------------|------------|
@@ -126,162 +126,59 @@ def load_sequences(data_path):
     print("X shape:", X.shape)
     print("y shape:", y.shape)
 
-🚀 Training the Model Process
-This project uses a CNN-LSTM architecture to classify human activities from image sequences. Below is the complete training pipeline.
+# 🚀 Training the Model Process
 
-1️⃣ Load and Preprocess Data
+## 1️⃣ Load the Dataset
+The dataset is loaded and split into 80% training and 20% validation.
 
-```python
-import os
-import numpy as np
-import tensorflow as tf
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
-from sklearn.model_selection import train_test_split
+Each image is normalized and converted into sequences.
 
-# Set constants
-sequence_length = 10  # Number of frames per sequence
-img_height, img_width = 128, 128  # Image dimensions
-data_path = "path_to_dataset/train"  # Path to dataset
+## 2️⃣ Data Augmentation
+Applied rotation, brightness adjustments, and horizontal flipping to improve generalization.
 
-# Function to load and preprocess image sequences
-def load_sequences(data_path):
-    X, y = [], []
-    class_names = sorted(os.listdir(data_path))
-    label_map = {name: idx for idx, name in enumerate(class_names)}
+## 3️⃣ Model Compilation
+Optimizer: Adam
 
-    for class_name in class_names:
-        class_dir = os.path.join(data_path, class_name)
-        frames = sorted(os.listdir(class_dir))
-        label = label_map[class_name]
+Loss Function: Sparse Categorical Crossentropy
 
-        for i in range(0, len(frames) - sequence_length + 1, sequence_length):
-            sequence = []
-            for j in range(sequence_length):
-                img_path = os.path.join(class_dir, frames[i + j])
-                img = load_img(img_path, target_size=(img_height, img_width))
-                img = img_to_array(img) / 255.0  # Normalize pixel values
-                sequence.append(img)
-            X.append(sequence)
-            y.append(label)
-    
-    return np.array(X), np.array(y), class_names
+Metric: Accuracy
 
-# Load dataset
-X, y, class_names = load_sequences(data_path)
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
-    Load image sequences from dataset folders and preprocess them.
+## 4️⃣ Training Configuration
+Epochs: 20
 
-    Args:
-    data_path (str): Path to the dataset directory.
+Batch Size: 8
 
-    Returns:
-    X (numpy array): Image sequences.
-    y (numpy array): Corresponding labels.
-    class_names (list): List of activity class names.
-    """
-    X, y = [], []
-    class_names = sorted(os.listdir(data_path))
-    label_map = {name: idx for idx, name in enumerate(class_names)}
+Validation Split: 20%
 
-    for class_name in class_names:
-        class_dir = os.path.join(data_path, class_name)
-        frames = sorted(os.listdir(class_dir))
-        label = label_map[class_name]
+## 5️⃣ Training Execution
+The model is trained on the dataset, extracting spatial & temporal features using CNN-LSTM layers.
 
-        # Create sequences of images
-        for i in range(0, len(frames) - sequence_length + 1, sequence_length):
-            sequence = []
-            for j in range(sequence_length):
-                img_path = os.path.join(class_dir, frames[i + j])
-                img = load_img(img_path, target_size=(img_height, img_width))
-                img = img_to_array(img) / 255.0  # Normalize pixel values
-                sequence.append(img)
-            X.append(sequence)
-            y.append(label)
-    
-    return np.array(X), np.array(y), class_names
+Accuracy & Loss are monitored over each epoch.
 
-# Load dataset
-X, y, class_names = load_sequences(data_path)
-print("Dataset loaded successfully.")
-print(f"X shape: {X.shape}, y shape: {y.shape}")
+## 6️⃣ Evaluation
+The model performance is evaluated using:
 
-# Split dataset into training and validation sets
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+Accuracy & Loss Plots
 
-print(f"Training set shape: {X_train.shape}")
-print(f"Validation set shape: {X_val.shape}")
+Confusion Matrix
 
 
-# CNN-LSTM Human Activity Recognition (HAR)
+# 📊 Results & Performance
+The training accuracy improves over epochs, but further hyperparameter tuning or pretrained CNNs may enhance performance.
 
-This project implements a **CNN-LSTM model** to classify human activities from image sequences. The model first extracts spatial features using **Convolutional Neural Networks (CNNs)** and then captures temporal dependencies using **Long Short-Term Memory (LSTM)** networks.
-
----
-
-## 📌 What This Code Does:
-✅ **Loads & Preprocesses the Dataset** (Normalizes images, converts them into sequences)  
-✅ **Defines a CNN-LSTM Model** (Extracts spatial & temporal features)  
-✅ **Trains the Model** (On Human Activity Recognition dataset)  
-✅ **Evaluates the Model** (Generates accuracy/loss plots & confusion matrix)  
-✅ **Saves the Model** (So you can reuse it later)  
-
----
-
-## 📊 Dataset & Preprocessing
-- The dataset is split into **80% training** and **20% validation**.
-- **Data augmentation** techniques such as **rotation, brightness adjustments, and horizontal flipping** are applied.
-- The model is compiled using **Adam optimizer** and **Sparse Categorical Crossentropy loss**.
-- Training is conducted for **20 epochs** with a batch size of **8**.
-
----
-
-## 🖥 Usage
-
-### 1️⃣ Install Dependencies  
-Run the following command to install required libraries:  
-
-```bash
-pip install tensorflow numpy pandas matplotlib seaborn scikit-learn
+A confusion matrix is generated to analyze class-wise predictions.
 
 
+# 📊 Dataset & Preprocessing
 The dataset is split into 80% training and 20% validation.
 
-Data augmentation techniques like rotation, brightness adjustments, and horizontal flipping are applied.
+Data augmentation techniques such as rotation, brightness adjustments, and horizontal flipping are applied.
 
 The model is compiled using Adam optimizer and Sparse Categorical Crossentropy loss.
 
 Training is conducted for 20 epochs with a batch size of 8.
 
-The dataset is split into train (80%) and validation (20%) sets.
-
-
-🖥 Usage
-
-Install Dependencies
-
-pip install tensorflow numpy pandas matplotlib seaborn scikit-learn
-
-Train the Model
-
-python train_model.py
-
-Evaluate Model
-
-y_pred = np.argmax(model.predict(X_val), axis=1)
-print(classification_report(y_val, y_pred))
-
-📊 Results
-
-Model Accuracy
-
-The model's training accuracy improves over epochs but may require hyperparameter tuning and pretrained CNNs for better performance.
-
-Confusion Matrix
-
-A confusion matrix is generated to evaluate per-class performance.
-
-### Classification Report
+## Classification Report
 
 | Class                 | Precision | Recall | F1-score |
 |----------------------|----------|--------|----------|
@@ -302,7 +199,6 @@ A confusion matrix is generated to evaluate per-class performance.
 | Hugging            | 0.29     | 0.12   | 0.17     |
 
 **Overall Accuracy**: **8%**  
-
 ## Sample Predictions
 Here are some example predictions made by the model:
 
@@ -315,17 +211,16 @@ Here are some example predictions made by the model:
 ### Model Performance
 
 #### Accuracy & Loss
-![accuracy_plot](https://github.com/user-attachments/assets/89626304-6ceb-4705-a462-602397907104)
+![accuracy_plot](https://github.com/user-attachments/assets/90af7876-d0ac-410b-abcb-e71673e4b0ac)
 
-![loss_plot](https://github.com/user-attachments/assets/a4b9bd47-9dc9-468e-9438-9473f2183be5)
+![loss_plot](https://github.com/user-attachments/assets/bad1482b-d044-43dc-83ac-82c10144fafa)
+
 
 #### Confusion Matrix
-![confusion_matrix](https://github.com/user-attachments/assets/43c242bf-59a7-4102-b8ea-ce89501f0fb7)
-
-
+![confusion_matrix](https://github.com/user-attachments/assets/7fb520ed-6ed2-4b66-8d5e-23b68ba883ee)
 
 📜 License
-
 This project is open-source and available under the MIT License.
 
-📌 Developed by: Youmna Emadeldin 
+📌 Developed by
+Youmna Emadeldin
