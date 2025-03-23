@@ -1,4 +1,4 @@
-# CNN_LSTM-HAR-
+# CNN_LSTM-HAR
 Human Activity Recognition (HAR) using CNN-LSTM
 
 This project implements a deep learning model combining Convolutional Neural Networks (CNNs) and Long Short-Term Memory (LSTM) networks for Human Activity Recognition (HAR) based on image sequences. The model is trained to classify various human activities from image sequences.
