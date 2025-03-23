@@ -85,29 +85,21 @@ Fully Connected Layers: Outputs probabilities for each class.
 | Dense             | 15 classes (Softmax)         | (None, 15)               | 1,935      |
 
 **Total Parameters**: 14,791,887
-Data Preprocessing
-The dataset is loaded and preprocessed as follows:
-
-python
-Copy
-Edit
-import os
-import numpy as np
-import pandas as pd
-import tensorflow as tf
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 # Define constants
+
 sequence_length = 10
 img_height, img_width = 128, 128
 data_path = "path_to_dataset"
-
 def load_sequences(data_path):
+   
     X, y = [], []
-    class_names = sorted(os.listdir(data_path))
-    label_map = {name: idx for idx, name in enumerate(class_names)}
     
-    for class_name in class_names:
+    class_names = sorted(os.listdir(data_path))
+    
+    label_map = {name: idx for idx, name in enumerate(class_names)}
+     
+     for class_name in class_names:
         class_dir = os.path.join(data_path, class_name)
         frames = sorted(os.listdir(class_dir))
         label = label_map[class_name]
