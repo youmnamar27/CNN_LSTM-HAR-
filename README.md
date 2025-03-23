@@ -1,4 +1,4 @@
-# CNN_LSTM-HAR
+![Screenshot (296)](https://github.com/user-attachments/assets/9456375a-bd16-4f53-a159-e736e3f78d10)# CNN_LSTM-HAR
 Human Activity Recognition (HAR) using CNN-LSTM
 
 This project implements a deep learning model combining Convolutional Neural Networks (CNNs) and Long Short-Term Memory (LSTM) networks for Human Activity Recognition (HAR) based on image sequences. The model is trained to classify various human activities from image sequences.
@@ -52,6 +52,25 @@ Running
 Calling
 
 Hugging
+
+## 📷 Sample Images from the Dataset
+The following images represent different activity classes used for training the CNN-LSTM model:
+             
+     import matplotlib.pyplot as plt
+     import os
+    fig, axes = plt.subplots(3, 5, figsize=(20, 10))
+    axes = axes.flatten()
+
+    for idx, class_name in enumerate(train_df['label'].unique()):
+    class_images = train_df[train_df['label'] == class_name]['filename'].values
+    img = plt.imread(os.path.join(train_path, class_images[0]))
+    axes[idx].imshow(img)
+    axes[idx].set_title(class_name)
+    axes[idx].axis('off')
+
+    plt.tight_layout()
+    plt.show()
+![dataset)](https://github.com/user-attachments/assets/885a2eed-65f2-4c17-8475-54ee675c8cd8)
 
 ## 🏗 Model Architecture
 
@@ -239,6 +258,10 @@ Here are some example predictions made by the model:
 ### Model Performance
 
 #### Accuracy & Loss
+![Model loss)](https://github.com/user-attachments/assets/ba57a374-5d15-46ad-ad04-bad5ee69e327)
+
+![Model accuracy](https://github.com/user-attachments/assets/72b0279a-8aea-4158-a19e-2eaa855425c9)
+
 ![accuracy_plot](https://github.com/user-attachments/assets/90af7876-d0ac-410b-abcb-e71673e4b0ac)
 
 ![loss_plot](https://github.com/user-attachments/assets/bad1482b-d044-43dc-83ac-82c10144fafa)
