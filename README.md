@@ -56,6 +56,8 @@ Hugging
 🏗 Model Architecture
 
 The implemented model follows a CNN-LSTM approach:
+![cnn_architecture_improved (1)](https://github.com/user-attachments/assets/7ef04a9c-d09a-452f-a536-58b796956968)
+![lstm_architecture_improved](https://github.com/user-attachments/assets/43e7d273-9e21-4a3e-84d7-e599154f8665)
 
 TimeDistributed CNN Layers: Extract spatial features from each frame.
 
@@ -120,10 +122,9 @@ def load_sequences(data_path):
             X.append(sequence)
             y.append(label)
     return np.array(X), np.array(y)
-
-X, y = load_sequences(data_path)
-print("X shape:", X.shape)
-print("y shape:", y.shape)
+    X, y = load_sequences(data_path)
+    print("X shape:", X.shape)
+    print("y shape:", y.shape)
 
 🚀 Training Process
 
